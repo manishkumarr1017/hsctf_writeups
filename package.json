@@ -1,0 +1,24 @@
+{
+  "name": "hsctf7",
+  "version": "1.0.0",
+  "description": "write up for hsctf7",
+  "main": "index.html",
+  "scripts": {
+  	"start": "npm rum lite",
+   	"test": "echo \"Error: no test specified\" && exit 1",
+    "lite": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manishkumarr1017/hsctf_writeups.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/manishkumarr1017/hsctf_writeups/issues"
+  },
+  "homepage": "https://github.com/manishkumarr1017/hsctf_writeups#readme",
+  "devDependencies": {
+    "lite-server": "^2.5.4"
+  }
+}

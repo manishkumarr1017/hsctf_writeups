@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <style type="text/css">
+
+    	.jumbotron
+    	{
+    		background-color: #fafafa;
+    	}
+    	footer
+    	{
+    		background-color: #fafafa;
+    		margin: 0px auto;
+    		padding-top: 50px;
+    	}
+    	body
+    	{
+    		background-color: #fafafa;
+    		font-family: tisa;
+    	}
+
+    	h1
+    	{
+    		font-size: 45px;
+    	}
+    	h2
+    	{
+    		font-size: 40px;
+    	}
+    	h4
+    	{
+    		font-size: 30px;
+    	}
+    	p,ul
+    	{
+    		font-size: 22px;
+    	}
+		.modal
+		{
+  			display: none; 
+  			position: fixed; 
+  			z-index: 1; 
+  			padding-top: 100px; 
+  			left: 0;
+  			top: 0;
+  			width: 100%;
+  			height: 100%; 
+  			overflow: auto; 
+  			background-color: rgb(0,0,0); 
+  			background-color: rgba(0,0,0,0.9); 
+		}
+
+		.modal-content 
+		{
+  			margin: auto;
+  			display: block;
+  			width: 80%;
+  			max-width: 700px;
+		}
+
+		.modal-content 
+		{
+  			animation-name: zoom;
+  			animation-duration: 0.6s;
+		}
+
+		@keyframes zoom 
+		{
+  			from {transform:scale(0)}
+  			to {transform:scale(1)}
+		}
+
+		.close 
+		{
+  			position: absolute;
+  			top: 15px;
+  			right: 35px;
+  			color: #f1f1f1;
+  			font-size: 40px;
+  			font-weight: bold;
+  			transition: 0.3s;
+		}
+
+		.close:hover,
+		.close:focus 
+		{
+  			color: #bbb;
+  			text-decoration: none;
+  			cursor: pointer;
+		}
+
+		@media only screen and (max-width: 700px)
+		{
+  			.modal-content 
+  			{
+    			width: 100%;
+  			}
+		} 
+    </style>
+	<title>HSCTF7-Writeup</title>
+</head>
+<body data-spy="scroll" data-target="scrollspy" data-offset="1">
+	<div class="jumbotron">
+		<div class="row justify-content-center">
+				<h1>HSCTF7 2020 WRITEUP</h1>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<img src="img/logo.png" id="1" class="img-fluid mx-auto d-block">
+		</div>
+	</div>
+	<br>
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-sm-4">
+				<h2>On This Page</h2>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-12 offset-md-1 col-sm">
+				<nav id="scrollspy">
+					<div class="shadow-lg p-3 mb-5 bg-white rounded">
+						<ul>
+							<li class="nav-item"><a class="nav-link" href="#token">Web: Broken Tokens</a></li>
+							<li class="nav-item"><a class="nav-link" href="#morbit">Crypto: Morbid</a></li>
+							<li class="nav-item"><a class="nav-link" href="#png">Forensics: Picturte Lab: Activity 10</a></li>
+							<li class="nav-item"><a class="nav-link" href="#calc">Miscellaneous: My First Calculator</a></li>
+							<li class="nav-item"><a class="nav-link" href="#pyc">Rev: dis</a></li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+		</div>
+	</div>
+	<br>
+	<div class="container" id="token">
+		<div class="card">
+			<div class="card-header bg-success">
+				<div class="row justify-content-center">
+					<h2>Web : Broken Tokens </h2>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<img src="img/broken_tokens.png" id="2" class="img-fluid mx-auto d-block" >
+				</div>
+			</div>
+		</div>
+			<br>
+			<div class="row">
+					<p>
+						In this challenge We were given a link to the login page , the source code for this challenge which was written in Python <a href="https://github.com/manishkumarr1017/hsctf_writeups/tree/master/code/broken_tokens/main.py" target="_blank"> main.py</a> , and the <a href="https://github.com/manishkumarr1017/hsctf_writeups/tree/master/code/broken_tokens/publickey.pem" target="_blank"></a> publickey.pem file was provided
+					</p>
+					<p>
+						By seeing the challenge description we can understand that there is a login page and by manipulating the cookie value we can login as the admin and When we login as the admin we will get the flag
+					</p>
+			</div>
+			<br>
+			<div class="row">
+				<img src="img/login.png" id="3" class="img-fluid mx-auto d-block" >
+			</div>
+			<br>
+			<div class="row">
+				<p>
+					So we loggen in as guest and decoded the cookie at <a href="https://jwt.io">jwt.io</a> 
+				</p>
+				<p>
+					By understanding the source code we already know that the login page use RS256 as its algorithm , But the problem is we cannot generate the tokens without knowing the private key so i tried finding private key with the help of public key But no luck , So by again analysing the code i found this intresting
+				</p>
+				<p>
+					So if we change the algorithm from RS256 to HS256 with the key as publickey.pem , We can able to login as admin
+				</p>
+				<p>
+					So I tried to generate JWT with algorithm as HS256 and the key as publickey.pem with this small code
+				</p>
+			</div>
+			<br>
+			<div class="row">
+				<img src="img/jwt.png" id="4" class="img-fluid mx-auto d-block" >
+			</div>
+			<br>
+			<div class="row">
+				<img src="img/flag_for_jwt.png" id="5" class="img-fluid" >
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-12 offset-md-1 col-sm">
+					<h4>Flag : flag{1n53cur3_tok3n5_5474212}</h4>
+				</div>
+			</div>
+			<br>
+	</div>
+	<div class="container" id="morbit">
+		<div class="card">
+			<div class="card-header bg-success">
+				<div class="row justify-content-center">
+					<h2>Crypto : Morbid</h2>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<img src="img/morbid.png" id="6" class="img-fluid mx-auto d-block" >
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<p>
+				In this challenge a <a href="https://github.com/manishkumarr1017/hsctf_writeups/tree/master/code/morbid/morbid.txt" target="_blank">morbid.txt</a> file which contains the ciphertext and <a href="https://www.cryptogram.org/downloads/aca.info/ciphers/Morbit.pdf" target="_blank">morbit.pdf</a> file which is used to understand the morbit cipher was given   
+			</p>
+			<p>
+				I found this <a href="https://www.dcode.fr/morbit-cipher" target="_blank">article </a> about morbit cipher useful
+			</p>
+			<p>
+				As there are only 9!=362880 keys are possible . It is possible to bruteforce all the possible keys
+			</p>
+			<p>
+				So I have written a script <a href="https://github.com/manishkumarr1017/hsctf_writeups/tree/master/code/morbid/brute.py">brute.py</a> for bruteforcing the given ciphertext with all possible keys
+			</p>
+		</div>
+		<br>
+		<div class="row">
+			<img src="img/flag_for_morbit.png" id="7" class="img-fluid mx-auto d-block" >
+		</div>
+		<br>
+		<div class="row">
+			<div class="col -12 offset-md-1 col-sm">
+				<h4>Flag : flag{M0R3_B1T5}</h4>
+			</div>
+		</div>
+	</div>
+	<br>
+	<div class="container" id="png">
+		<div class="card">
+			<div class="card-header bg-success">
+				<div class="row justify-content-center">
+					<h2>Forensics: Picturte Lab: Activity 10</h2>
+				</div>
+			</div>
+			<br>
+			<div class="card-body">
+				<div class="row">
+					<img src="img/picture.png"  id="8" class="img-fluid mx-auto d-block" >
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<p>
+				In this Challenge we got a corrupted png file we have to recover it
+			</p>
+			<p>
+				This <a href="http://www.libpng.org/pub/png/spec/1.2/PNG-Chunks.html" target="_blank">article</a> about png chunks is very useful for solving this challenge 
+			</p>
+			<p>
+				First we changed the extension of the file to png and edited magic numbers using hexeditor . The magic numbers of the png file is 89 50 4E 47 
+			</p>
+		</div>
+		<br>
+		<div class="row" id="calc">
+			<img src="img/chunk.png" id="9" class="img-fluid mx-auto d-block" >
+		</div>
+		<br>
+		<div class="row">	
+			<p>
+				By using pngcheck we Found that IHDR,IDAT,IEND Chunks are missing . So By  Fixing these chunks and opening the png file We got the Flag
+			</p>
+		</div>
+		<br>
+		<div class="row">
+			<img src="img/flag_for_picture.png" id="10" class="img-fluid mx-auto d-block">
+		</div>
+	</div>
+	<br>
+	<div class="container" id="calc">
+		<div class="card">
+			<div class="card-header bg-success">
+				<div class="row justify-content-center">
+					<h2>Miscellaneous: My First Calculator</h2>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<img src="img/calculator.png" id="11" class="img-fluid mx-auto d-block">
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<p>
+				We got a calculator <a href="https://github.com/manishkumarr1017/hsctf_writeups/tree/master/code/calculator/calculator.py" target="_blank">program</a> running on the host misc.hsctf.com and port 7001 
+			</p>
+			<p>
+				For Solving This Challenge I used a technique which is similar to blind sql injection where you can leak the flag character by character
+			</p>
+			<p>
+				My logic for this question is keep "flag{x" in open("flag.txt").read()<br>
+				Where x is a string if this string is present in flag.txt we will get 1 or we will get 0 and the second number i kept as 2 so overall if the string is present we will get a result of 3 or we will get 2
+			</p>
+		</div>
+		<div class="row">
+			<img src="img/calc.png" id="12" class="img-fluid mx-auto d-block">
+		</div>
+		<br>
+		<div class="row">
+			<p>
+				So I have written this <a href="https://github.com/manishkumarr1017/hsctf_writeups/tree/master/code/calculator/calc_brute.py">Script</a> for Leaking the flag
+			</p>
+		</div>
+		<div class="row">
+			<div class="col-12 offset-md-1 col-sm">
+				<h4>Flag : flag{please_use_python3}</h4>
+			</div>
+		</div>
+	</div>
+	<br>
+	<div class="container" id="pyc">
+		<div class="card">
+			<div class="card-header bg-success">
+				<div class="row justify-content-center">
+					<h2>Rev: Dis</h2>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<img src="img/dis.png" id="14" class="img-fluid mx-auto d-block" >
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<p>
+				In this challenge we got a python bytecode disassembly given in <a href="https://github.com/manishkumarr1017/hsctf_writeups/tree/master/code/dis/disas" target="_blank">text</a> file
+			</p>
+			<p>
+				After googling around a bit I found This <a href="https://docs.python.org/2/library/dis.html#bytecodes">article</a> Where all the details of ByteCode Instructions Where Provided
+			</p>
+			<p>
+				<ul>
+					<li>By analysing this disassembly</li>
+					<li>The Flow Of the Program is:</li>
+					<li>Taking a String as Userinput</li>
+					<li>calling e function with the userinput string as an argument</li>
+					<li>in function e ascii values of the characters in the string is stored in a list</li>
+					<li>the function a is called with list as argument</li>
+					<li>the values of the list is doubled and then substracted by 60</li>
+					<li>the new list is returned</li>
+					<li>then the function c is called with same list as argument</li>
+					<li>the vallues of the list is incremented by 5</li>
+					<li>the new list is returned</li>
+					<li>the lists which was returned by the functions a and c were the arguments of the function b and the function b is called</li>
+					<li>the values in the two lists were added and substracted by 50 and the new list is returned</li>
+					<li>At Last the the returned list in b is xored with 5 and substracted by 30</li>
+				</ul>
+			</p>
+		</div>
+		<div class="row">
+			<img src="img/flag_for_dis.png" id="16" class="img-fluid" >
+		</div>
+		<br>
+		<br>
+		<div class="row">
+			<div class="col-12 offset-md-1 col-sm">
+				<h4>Flag : flag{5tr4ng3_d1s45s3mbly_1c0a88}</h4>
+			</div>
+		</div>
+	</div>
+	<div id="myModal" class="modal">
+  		<span class="close">&times;</span>
+  		<img class="modal-content" id="img01">
+  		<div id="caption"></div>
+	</div>
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="offset-3 col">
+				<small> © 2014 Copyright Text</small>
+			</div>
+		</div>
+	</footer>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	<script>
+		$(document).ready(function () 
+		{       
+    		$('img').on('click', function () 
+    		{
+    			var modal = document.getElementById("myModal");
+				var modalImg = document.getElementById("img01");
+    			var picID = $(this).attr('id');
+    			var img=$('img')[picID-1];
+  				modal.style.display = "block";
+  				modalImg.src = img.src;
+				var span = document.getElementsByClassName("close")[0];
+				span.onclick = function() { 
+  					modal.style.display = "none";
+				}
+    		});
+    	});
+	</script>
+</body>
+</html>
